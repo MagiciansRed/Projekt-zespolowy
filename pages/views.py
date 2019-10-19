@@ -7,4 +7,4 @@ def home_page_view(request):
 
 
 def register_view(request):
-    return render(request, "register.html")
+    return render(request, "account/register.html")
