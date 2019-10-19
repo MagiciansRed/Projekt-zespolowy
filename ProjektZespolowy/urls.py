@@ -20,10 +20,16 @@ from pages.views import (
     home_page_view,
 )
 
-from account.views import registration_view
+from account.views import (
+    registration_view,
+    logout_view,
+    login_view,
+)
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', home_page_view, name='home'),
     path('register/', registration_view, name='register'),
+    path('logout/', logout_view, name='logout'),
+    path('login/', login_view, name='login'),
 ]
