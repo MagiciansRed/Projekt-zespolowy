@@ -8,6 +8,8 @@ from django.utils.text import slugify
 # Create your models here.
 class Course(models.Model):
     name = models.CharField(max_length=60, null=False, blank=False)
+    description = models.CharField(max_length=600, null=False, blank=False)
+    image = models.ImageField(default='default.jpg', upload_to='course_banners')
     author = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     date_added = models.DateTimeField(auto_now_add=True, verbose_name="Date added")
     slug = models.SlugField(blank=True, unique=True)
