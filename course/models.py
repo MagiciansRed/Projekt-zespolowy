@@ -15,7 +15,7 @@ class Course(models.Model):
     slug = models.SlugField(blank=True, unique=True)
 
     def __str__(self):
-        return self.name
+        return self.slug
 
 
 class Subscription(models.Model):
