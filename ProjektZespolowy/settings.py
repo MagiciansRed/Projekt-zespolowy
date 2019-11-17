@@ -36,6 +36,7 @@ INSTALLED_APPS = [
 
     # Our apps
     'account',
+    'course',
     
     'django.contrib.admin',
     'django.contrib.auth',
