@@ -1,5 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager
+from django.db.models.signals import post_save, pre_save
+from django.dispatch import receiver
 
 
 # Create your models here.
@@ -61,3 +63,18 @@ class Account(AbstractBaseUser):
         return True
 
 
+class Profile(models.Model):
+    user = models.OneToOneField(Account, on_delete=models.CASCADE)
+    image = models.ImageField(default='default.jpg', upload_to='profile_pics')
+
+    def __str__(self):
+        return f'{self.user.username} Profile'
+
+
+def create_profile(sender, instance, created, **kwargs):
+    if created:
+        Profile.objects.create(user=instance)
+        instance.profile.save()
+
+
+post_save.connect(create_profile, sender=Account)
