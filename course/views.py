@@ -45,3 +45,8 @@ def detail_course_view(request, slug):
             context['subscription_state'] = True
 
     return render(request, 'course/detail_course.html', context)
+
+
+def create_course_view(request):
+    context = {}
+    return render(request, 'course/create_course.html', context)
