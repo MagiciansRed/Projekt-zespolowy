@@ -31,6 +31,11 @@ def detail_course_view(request, slug):
                     context['subscription_state'] = False
                 break
 
+        if request.POST.get('subscribe'):
+            sub.course = course
+            sub.user = current_user
+            sub.save()
+            context['subscription_state'] = True
     else:
         context['subscription_state'] = False
         if request.POST.get('subscribe'):
