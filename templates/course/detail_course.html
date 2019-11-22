@@ -10,10 +10,11 @@
     {% if subscription_state == True %}
         <form method="POST"> {% csrf_token %}
             <button class="btn btn-lg btn-success btn-block btn-d" name="subscribe" value="" type="submit" disabled>Subscribed</button>
+            <button class="btn btn-lg btn-danger btn-block btn-d" name="unsubscribe" value="Unsubscribe" type="submit" >Unsubscribe</button>
         </form>
     {% else %}
         <form method="POST"> {% csrf_token %}
-            <button class="btn btn-lg btn-primary btn-block " name="subscribe" value="Click" type="submit">Subscribe</button>
+            <button class="btn btn-lg btn-primary btn-block " name="subscribe" value="Subscribe" type="submit">Subscribe</button>
         </form>
     {% endif %}
 

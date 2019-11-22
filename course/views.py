@@ -27,7 +27,11 @@ def detail_course_view(request, slug):
             if e.user.__eq__(user):
                 print("user exists")
                 context['subscription_state'] = True
+                if request.POST.get('unsubscribe'):
+                    e.delete()
+                    context['subscription_state'] = False
                 break
+
     else:
         context['subscription_state'] = False
         if request.POST.get('subscribe'):
