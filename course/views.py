@@ -18,14 +18,13 @@ def detail_course_view(request, slug):
     course = get_object_or_404(Course, slug=slug)
     context['course_detail'] = course
 
-    user = request.user
+    current_user = request.user
     sub = Subscription()
     entry = Subscription.objects.filter(course=course)
 
     if entry.exists():
         for e in entry:
-            if e.user.__eq__(user):
-                print("user exists")
+            if e.user.username == current_user.username:
                 context['subscription_state'] = True
                 if request.POST.get('unsubscribe'):
                     e.delete()
@@ -36,7 +35,7 @@ def detail_course_view(request, slug):
         context['subscription_state'] = False
         if request.POST.get('subscribe'):
             sub.course = course
-            sub.user = user
+            sub.user = current_user
             sub.save()
             context['subscription_state'] = True
 

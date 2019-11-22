@@ -2,7 +2,7 @@
 
  {% if request.user.is_authenticated %}
 	<p><a href="{% url 'home' %}">Home</a> | <a href="{% url 'logout' %}">Logout</a></p>
-	<p>Hello, {{request.user.username}}</p>
+
 	{% else %}
 	<p><a href="{% url 'home' %}">Home</a> | <a href="{% url 'register' %}">Register</a> | <a href="{% url 'login' %}">Login</a></p>
 	{% endif %}
@@ -14,6 +14,7 @@
   <h5 class="my-0 mr-md-auto font-weight-normal">Projekt zespolowy</h5>
   <nav class="my-2 my-md-0 mr-md-3">
    {% if request.user.is_authenticated %}
+        <a class="p-2 text-dark" > Hello, {{request.user.username}}</a>
         <a class="p-2 text-dark" href="{% url 'profile' %}">Profile</a>
         <a class="p-2 text-dark" href="{% url 'home' %}">Home</a>
         <a class="p-2 text-dark" href="{% url 'course:courses' %}">Courses</a>
