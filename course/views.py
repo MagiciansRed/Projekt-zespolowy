@@ -49,7 +49,7 @@ def detail_course_view(request, slug):
 
 def create_course_view(request):
     if request.method == 'POST':
-        course_form = CourseCreateForm(request.POST, instance=request.user)
+        course_form = CourseCreateForm(request.POST, request.FILES, instance=request.user)
 
         course = Course()
         if course_form.is_valid():
@@ -57,8 +57,9 @@ def create_course_view(request):
             course.name = data['name']
             course.description = data['description']
             course.author = request.user
+            course.image = data['image']
             course.save()
-            return redirect('course:courses')
+            return redirect('course:detail', course.slug)
     else:
         course_form = CourseCreateForm(instance=request.user)
 
