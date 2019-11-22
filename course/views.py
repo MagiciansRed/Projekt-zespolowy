@@ -1,6 +1,6 @@
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404, redirect
 from course.models import Course, Subscription
-
+from course.forms import CourseCreateForm
 
 # Create your views here.
 
@@ -48,5 +48,21 @@ def detail_course_view(request, slug):
 
 
 def create_course_view(request):
-    context = {}
+    if request.method == 'POST':
+        course_form = CourseCreateForm(request.POST, instance=request.user)
+
+        course = Course()
+        if course_form.is_valid():
+            data = course_form.cleaned_data
+            course.name = data['name']
+            course.description = data['description']
+            course.author = request.user
+            course.save()
+            return redirect('course:courses')
+    else:
+        course_form = CourseCreateForm(instance=request.user)
+
+    context = {
+        'course_form': course_form,
+    }
     return render(request, 'course/create_course.html', context)
