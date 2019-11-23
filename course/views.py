@@ -1,3 +1,4 @@
+from django.db import IntegrityError
 from django.shortcuts import render, get_object_or_404, redirect
 from course.models import Course, Subscription
 from course.forms import CourseCreateForm
@@ -21,6 +22,10 @@ def detail_course_view(request, slug):
     current_user = request.user
     sub = Subscription()
     entry = Subscription.objects.filter(course=course)
+
+    if request.POST.get('delete') and course.author == current_user:
+        course.delete()
+        return redirect('course:courses')
 
     if entry.exists():
         for e in entry:
@@ -48,6 +53,7 @@ def detail_course_view(request, slug):
 
 
 def create_course_view(request):
+    context = {}
     if request.method == 'POST':
         course_form = CourseCreateForm(request.POST, request.FILES, instance=request.user)
 
@@ -58,12 +64,15 @@ def create_course_view(request):
             course.description = data['description']
             course.author = request.user
             course.image = data['image']
-            course.save()
-            return redirect('course:detail', course.slug)
+            try:
+                course.save()
+                return redirect('course:detail', course.slug)
+            except IntegrityError:
+                print("error")
+                context['course_error'] = "You have already created a course with this name. Choose a different one"          
     else:
         course_form = CourseCreateForm(instance=request.user)
 
-    context = {
-        'course_form': course_form,
-    }
+    context['course_form'] = course_form
+
     return render(request, 'course/create_course.html', context)

@@ -18,6 +18,13 @@
         </form>
     {% endif %}
 
+    {% if request.user == course_detail.author %}
+
+        <form method="POST"> {% csrf_token %}
+            <button class="btn btn-lg btn-danger btn-block " name="delete" value="Delete" type="submit">Delete course</button>
+        </form>
+
+    {% endif %}
 
 
 
