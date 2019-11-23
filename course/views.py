@@ -22,6 +22,10 @@ def detail_course_view(request, slug):
     sub = Subscription()
     entry = Subscription.objects.filter(course=course)
 
+    if request.POST.get('delete') and course.author == current_user:
+        course.delete()
+        return redirect('course:courses')
+
     if entry.exists():
         for e in entry:
             if e.user.username == current_user.username:
