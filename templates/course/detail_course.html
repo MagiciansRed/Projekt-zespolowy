@@ -2,10 +2,26 @@
 
 
 {% block content %}
+    <style>
+    .account-img {
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      padding: 5px;
+      width: 200px;
+      height: 200px;
+    }
+  </style>
 
-    <h1>Title: {{ course_detail.name }} </h1>
-    <h3>Author: {{ course_detail.author }} </h3>
-    <p>Description: {{ course_detail.description }} </p>
+    <article class="media content-section">
+          <img class="account-img" src="{{ course_detail.author.profile.image.url }}">
+          <div class="media-body">
+            <div class="article-metadata">
+              <h2 class="account-heading"> Author: {{ course_detail.author }}</h2>
+            </div>
+            <h3 class="account-heading"> Course name: {{ course_detail.name }}</h3>
+            <p class="article-content"> Description: {{ course_detail.description }}</p>
+          </div>
+        </article>
 
     {% if subscription_state == True %}
         <form method="POST"> {% csrf_token %}
