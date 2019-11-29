@@ -1,8 +1,8 @@
 from django.db import IntegrityError
 from django.shortcuts import render, get_object_or_404, redirect
 from course.models import Course, Subscription
-from course.forms import CourseCreateForm
-
+from course.forms import CourseCreateForm, EditCourseForm
+from django.utils.text import slugify
 # Create your views here.
 
 
@@ -54,7 +54,7 @@ def detail_course_view(request, slug):
 
 def create_course_view(request):
     context = {}
-    if request.method == 'POST':
+    if request.POST.get('edit'):
         course_form = CourseCreateForm(request.POST, request.FILES, instance=request.user)
 
         course = Course()
@@ -83,4 +83,28 @@ def edit_course_view(request, slug):
     course = get_object_or_404(Course, slug=slug)
     context['course_detail'] = course
 
+    if request.method == 'POST':
+        course_form = EditCourseForm(request.POST, request.FILES, instance=request.user,
+                                     initial={'name': course.name, 'description': course.description})
+
+        if course_form.is_valid():
+            data = course_form.cleaned_data
+            course.name = data['name']
+            course.description = data['description']
+            course.author = request.user
+            course.image = data['image']
+            course.slug = slugify(course.author.username + "-" + course.name)
+            try:
+                course.save()
+                return redirect('course:detail', course.slug)
+            except IntegrityError:
+                print("error")
+                context['course_error'] = "You have already created a course with this name. Choose a different one"
+    else:
+        course_form = EditCourseForm(instance=request.user, initial={'name': course.name,
+                                                                     'description': course.description})
+
+    context['course_form'] = course_form
+
     return render(request, 'course/edit_course.html', context)
+

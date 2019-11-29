@@ -10,3 +10,13 @@ class CourseCreateForm(forms.ModelForm):
     class Meta:
         model = Course
         fields = ("name", "description", "image")
+
+
+class EditCourseForm(forms.ModelForm):
+    name = forms.CharField(max_length=60)
+    description = forms.CharField(max_length=600)
+    image = forms.ImageField(required=False)
+
+    class Meta:
+        model = Course
+        fields = ("name", "description", "image")
