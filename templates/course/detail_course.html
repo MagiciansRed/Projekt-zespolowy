@@ -9,22 +9,47 @@
 
     {% if subscription_state == True %}
         <form method="POST"> {% csrf_token %}
-            <button class="btn btn-lg btn-success btn-block btn-d" name="subscribe" value="" type="submit" disabled>Subscribed</button>
-            <button class="btn btn-lg btn-danger btn-block btn-d" name="unsubscribe" value="Unsubscribe" type="submit" >Unsubscribe</button>
+            <button class="btn btn-lg btn-success btn-block btn-d" name="subscribe" value="" type="submit" disabled>
+                Subscribed
+            </button>
+            <button class="btn btn-lg btn-danger btn-block btn-d" name="unsubscribe" value="Unsubscribe" type="submit">
+                Unsubscribe
+            </button>
         </form>
     {% else %}
         <form method="POST"> {% csrf_token %}
-            <button class="btn btn-lg btn-primary btn-block " name="subscribe" value="Subscribe" type="submit">Subscribe</button>
+            <button class="btn btn-lg btn-primary btn-block " name="subscribe" value="Subscribe" type="submit">
+                Subscribe
+            </button>
         </form>
     {% endif %}
+
+
+    <table class="table">
+        <thead>
+        <tr>
+            <th scope="col">Source</th>
+            <th scope="col">Target</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for word in words %}
+            <tr>
+                <td>{{ word.source_word }}</td>
+                <td>{{ word.target_word }}</td>
+             </tr>
+        {% endfor %}
+        </tbody>
+    </table>
 
     {% if request.user == course_detail.author %}
 
         <form method="POST"> {% csrf_token %}
-            <button class="btn btn-lg btn-danger btn-block " name="delete" value="Delete" type="submit">Delete course</button>
+            <button class="btn btn-lg btn-danger btn-block " name="delete" value="Delete" type="submit">Delete course
+            </button>
         </form>
 
-        <a href="{% url 'course:edit_course' course_detail.slug %}" >EDIT</a>
+        <a href="{% url 'course:edit_course' course_detail.slug %}">EDIT</a>
 
     {% endif %}
 
