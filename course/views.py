@@ -1,3 +1,4 @@
+from django.contrib.auth.decorators import login_required
 from django.db import IntegrityError
 from django.shortcuts import render, get_object_or_404, redirect
 from course.models import Course, Subscription
@@ -52,6 +53,7 @@ def detail_course_view(request, slug):
     return render(request, 'course/detail_course.html', context)
 
 
+@login_required
 def create_course_view(request):
     context = {}
     if request.POST.get('edit'):
@@ -78,6 +80,7 @@ def create_course_view(request):
     return render(request, 'course/create_course.html', context)
 
 
+@login_required
 def edit_course_view(request, slug):
     context = {}
     course = get_object_or_404(Course, slug=slug)
