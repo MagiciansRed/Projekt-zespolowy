@@ -20,6 +20,9 @@ def detail_course_view(request, slug):
     course = get_object_or_404(Course, slug=slug)
     context['course_detail'] = course
 
+    words = Word.objects.all().filter(course=course)
+    context['words'] = words
+
     current_user = request.user
     sub = Subscription()
     entry = Subscription.objects.filter(course=course)
