@@ -59,7 +59,7 @@ def detail_course_view(request, slug):
 @login_required
 def create_course_view(request):
     context = {}
-    if request.POST.get('edit'):
+    if request.method == 'POST':
         course_form = CourseCreateForm(request.POST, request.FILES, instance=request.user)
 
         course = Course()
