@@ -85,6 +85,11 @@ def edit_course_view(request, slug):
     context = {}
     course = get_object_or_404(Course, slug=slug)
     context['course_detail'] = course
+    context['course_unauthorized'] = ""
+
+    if course.author != request.user:
+        context['course_unauthorized'] = "You cannot edit someone's else course."
+        return render(request, 'course/edit_course.html', context)
 
     if request.method == 'POST':
         course_form = EditCourseForm(request.POST, request.FILES, instance=request.user,
