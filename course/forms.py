@@ -29,3 +29,11 @@ class AddWordForm(forms.ModelForm):
     class Meta:
         model = Word
         fields = ("target_word", "source_word")
+
+
+class RemoveWordForm(forms.ModelForm):
+    source_word = forms.ModelChoiceField(queryset=Word.objects.all())
+
+    class Meta:
+        model = Word
+        fields = ('source_word',)

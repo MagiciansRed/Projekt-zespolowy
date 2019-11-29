@@ -52,7 +52,22 @@
             </div>
         {% endif %}
 
+        <form method="POST" enctype="multipart/form-data" >
+            {% csrf_token %}
+            <fieldset class="form-group">
+                <legend class="border-bottom mb-4">Remove word</legend>
+                {{ word_remove_form|crispy }}
+            </fieldset>
+            <div class="form-group">
+                <button class="btn btn-outline-info" name="remove_word" value="Remove" type="submit">Remove</button>
+            </div>
+        </form>
 
+         {% if word_success_delete != "" %}
+            <div class="alert alert-success" role="alert">
+                {{ word_success_delete }}
+            </div>
+        {% endif %}
 
 
         {% comment %}<script type="application/javascript">

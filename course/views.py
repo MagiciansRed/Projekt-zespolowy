@@ -2,7 +2,7 @@ from django.contrib.auth.decorators import login_required
 from django.db import IntegrityError
 from django.shortcuts import render, get_object_or_404, redirect
 from course.models import Course, Subscription, Word
-from course.forms import CourseCreateForm, EditCourseForm, AddWordForm
+from course.forms import CourseCreateForm, EditCourseForm, AddWordForm, RemoveWordForm
 from django.utils.text import slugify
 # Create your views here.
 
@@ -92,6 +92,7 @@ def edit_course_view(request, slug):
     context['course_unauthorized'] = ""
     context['word_success'] = ""
     context['word_error'] = ""
+    context['word_success_delete'] = ""
 
     if course.author != request.user:
         context['course_unauthorized'] = "You cannot edit someone else's course."
@@ -135,8 +136,23 @@ def edit_course_view(request, slug):
     else:
         word_form = AddWordForm(instance=request.user)
 
+    if request.POST.get('remove_word'):
+        word_remove_form = RemoveWordForm(request.POST)
+        word_remove_form.fields['source_word'].queryset = Word.objects.filter(course=course)
+
+        if word_remove_form.is_valid():
+            data = word_remove_form.cleaned_data
+            word = Word.objects.all().filter(course=course).filter(source_word=data['source_word'].source_word)
+            word.delete()
+            context['word_success_delete'] = "Word deleted successfully."
+
+    else:
+        word_remove_form = RemoveWordForm()
+        word_remove_form.fields['source_word'].queryset = Word.objects.filter(course=course)
+
     context['course_form'] = course_form
     context['word_form'] = word_form
+    context['word_remove_form'] = word_remove_form
 
     return render(request, 'course/edit_course.html', context)
 
