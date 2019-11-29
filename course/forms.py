@@ -1,5 +1,5 @@
 from django import forms
-from course.models import Course
+from course.models import Course, Word
 
 
 class CourseCreateForm(forms.ModelForm):
@@ -20,3 +20,12 @@ class EditCourseForm(forms.ModelForm):
     class Meta:
         model = Course
         fields = ("name", "description", "image")
+
+
+class AddWordForm(forms.ModelForm):
+    target_word = forms.CharField(max_length=60)
+    source_word = forms.CharField(max_length=60)
+
+    class Meta:
+        model = Word
+        fields = ("target_word", "source_word")

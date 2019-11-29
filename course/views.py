@@ -1,8 +1,8 @@
 from django.contrib.auth.decorators import login_required
 from django.db import IntegrityError
 from django.shortcuts import render, get_object_or_404, redirect
-from course.models import Course, Subscription
-from course.forms import CourseCreateForm, EditCourseForm
+from course.models import Course, Subscription, Word
+from course.forms import CourseCreateForm, EditCourseForm, AddWordForm
 from django.utils.text import slugify
 # Create your views here.
 
@@ -71,7 +71,7 @@ def create_course_view(request):
                 return redirect('course:detail', course.slug)
             except IntegrityError:
                 print("error")
-                context['course_error'] = "You have already created a course with this name. Choose a different one"          
+                context['course_error'] = "You have already created a course with this name. Choose a different one."
     else:
         course_form = CourseCreateForm(instance=request.user)
 
@@ -85,13 +85,16 @@ def edit_course_view(request, slug):
     context = {}
     course = get_object_or_404(Course, slug=slug)
     context['course_detail'] = course
+    context['course_error'] = ""
     context['course_unauthorized'] = ""
+    context['word_success'] = ""
+    context['word_error'] = ""
 
     if course.author != request.user:
-        context['course_unauthorized'] = "You cannot edit someone's else course."
+        context['course_unauthorized'] = "You cannot edit someone else's course."
         return render(request, 'course/edit_course.html', context)
 
-    if request.method == 'POST':
+    if request.POST.get('edit'):
         course_form = EditCourseForm(request.POST, request.FILES, instance=request.user,
                                      initial={'name': course.name, 'description': course.description})
 
@@ -107,12 +110,30 @@ def edit_course_view(request, slug):
                 return redirect('course:detail', course.slug)
             except IntegrityError:
                 print("error")
-                context['course_error'] = "You have already created a course with this name. Choose a different one"
+                context['course_error'] = "You have already created a course with this name. Choose a different one."
     else:
         course_form = EditCourseForm(instance=request.user, initial={'name': course.name,
                                                                      'description': course.description})
 
+    if request.POST.get('add_word'):
+        word_form = AddWordForm(request.POST, instance=request.user)
+        word = Word()
+        if word_form.is_valid():
+            data = word_form.cleaned_data
+            word.source_word = data['source_word']
+            word.target_word = data['target_word']
+            word.course = course
+            try:
+                word.save()
+                context['word_success'] = "Word added successfully."
+            except IntegrityError:
+                context['word_error'] = "You have already such word. Choose a different one."
+
+    else:
+        word_form = AddWordForm(instance=request.user)
+
     context['course_form'] = course_form
+    context['word_form'] = word_form
 
     return render(request, 'course/edit_course.html', context)
 
