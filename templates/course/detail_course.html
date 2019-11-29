@@ -24,6 +24,8 @@
             <button class="btn btn-lg btn-danger btn-block " name="delete" value="Delete" type="submit">Delete course</button>
         </form>
 
+        <a href="{% url 'course:edit_course' course_detail.slug %}" >EDIT</a>
+
     {% endif %}
 
 

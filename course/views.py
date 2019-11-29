@@ -76,3 +76,11 @@ def create_course_view(request):
     context['course_form'] = course_form
 
     return render(request, 'course/create_course.html', context)
+
+
+def edit_course_view(request, slug):
+    context = {}
+    course = get_object_or_404(Course, slug=slug)
+    context['course_detail'] = course
+
+    return render(request, 'course/edit_course.html', context)
