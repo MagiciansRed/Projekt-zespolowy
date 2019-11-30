@@ -166,4 +166,13 @@ def edit_course_view(request, slug):
 
 @login_required
 def learn_course_view(request, slug):
-    return render(request, 'course/learn_course.html')
+    context = {}
+    course = get_object_or_404(Course, slug=slug)
+    context['course_detail'] = course
+
+    words = Word.objects.all().filter(course=course)
+    context['words'] = words
+
+    current_user = request.user
+
+    return render(request, 'course/learn_course.html', context)
