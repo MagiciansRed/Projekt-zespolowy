@@ -163,3 +163,7 @@ def edit_course_view(request, slug):
 
     return render(request, 'course/edit_course.html', context)
 
+
+@login_required
+def learn_course_view(request, slug):
+    return render(request, 'course/learn_course.html')
