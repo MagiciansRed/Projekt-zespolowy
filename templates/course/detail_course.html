@@ -35,7 +35,7 @@
             <h3 class="account-heading"> Course name: {{ course_detail.name }}</h3>
             <p class="article-content"> Description: {{ course_detail.description }}</p>
             {% if subscription_state == True %}
-                <p class="article-content"> You are subscribed to this course.</p>
+                <p class="article-content text-info"> You are subscribed to this course.</p>
             {% endif %}
         </div>
         {% if request.user == course_detail.author or subscription_state == True %}
