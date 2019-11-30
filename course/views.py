@@ -106,10 +106,13 @@ def edit_course_view(request, slug):
 
         if course_form.is_valid():
             data = course_form.cleaned_data
-            course.name = data['name']
-            course.description = data['description']
+            if data['name']:
+                course.name = data['name']
+            if data['description']:
+                course.description = data['description']
             course.author = request.user
-            course.image = data['image']
+            if data['image']:
+                course.image = data['image']
             course.slug = slugify(course.author.username + "-" + course.name)
             try:
                 course.save()
