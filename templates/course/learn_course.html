@@ -17,20 +17,34 @@
         </div>
     </div>
 
-     <div class="row">
+    <div class="row">
         <div class="col-12">
             <h4 id="translated">Source word</h4>
         </div>
     </div>
 
+{#    <div class="row">#}
+{#        <div class="col-12">#}
+{#            <div class="alert alert-success" role="alert">#}
+{#                <span>Correct!</span>#}
+{#            </div>#}
+{#        </div>#}
+{#    </div>#}
+
     <div class="row">
         <div class="col-12">
-            <div class="alert alert-success" role="alert">
-                <span>Correct!</span>
-            </div>
+            <form method="POST" enctype="multipart/form-data">
+                {% csrf_token %}
+                <fieldset class="form-group">
+                    <legend class="border-bottom mb-4">Enter translation</legend>
+                    {{ learn_form|crispy }}
+                </fieldset>
+                <div class="form-group">
+                    <button class="btn btn-outline-info" name="check" value="Check" type="submit">Check</button>
+                </div>
+            </form>
         </div>
     </div>
-
 
     <script type="application/javascript">
 

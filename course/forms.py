@@ -37,3 +37,11 @@ class RemoveWordForm(forms.ModelForm):
     class Meta:
         model = Word
         fields = ('source_word',)
+
+
+class LearnWordForm(forms.ModelForm):
+    source_word = forms.CharField(max_length=60)
+
+    class Meta:
+        model = Word
+        fields = ('source_word',)

@@ -2,7 +2,7 @@ from django.contrib.auth.decorators import login_required
 from django.db import IntegrityError
 from django.shortcuts import render, get_object_or_404, redirect
 from course.models import Course, Subscription, Word
-from course.forms import CourseCreateForm, EditCourseForm, AddWordForm, RemoveWordForm
+from course.forms import CourseCreateForm, EditCourseForm, AddWordForm, RemoveWordForm, LearnWordForm
 from django.utils.text import slugify
 # Create your views here.
 
@@ -174,5 +174,12 @@ def learn_course_view(request, slug):
     context['words'] = words
 
     current_user = request.user
+
+    if request.POST.get('check'):
+        learn_word_form = LearnWordForm(request.POST)
+        context['learn_form'] = learn_word_form
+    else:
+        learn_word_form = LearnWordForm()
+        context['learn_form'] = learn_word_form
 
     return render(request, 'course/learn_course.html', context)
