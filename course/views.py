@@ -68,7 +68,9 @@ def create_course_view(request):
             course.name = data['name']
             course.description = data['description']
             course.author = request.user
-            course.image = data['image']
+            if(data['image']):
+                course.image = data['image']
+
             try:
                 course.save()
                 return redirect('course:detail', course.slug)
