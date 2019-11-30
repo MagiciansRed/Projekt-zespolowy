@@ -6,7 +6,7 @@ def home_page_view(request):
     user = request.user
     if user.is_authenticated:
         return render(request, "dashboard.html")
-    else: 
+    else:
         return render(request, "home_page.html")
 
 
