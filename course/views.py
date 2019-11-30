@@ -27,6 +27,8 @@ def detail_course_view(request, slug):
     sub = Subscription()
     entry = Subscription.objects.filter(course=course)
 
+    context['subscription_state'] = False
+
     if request.POST.get('delete') and course.author == current_user:
         course.delete()
         return redirect('course:courses')
