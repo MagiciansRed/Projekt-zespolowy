@@ -6,8 +6,21 @@
     </style>
     <main role="main">
 
+        <div class="d-block d-lg-none row justify-content-center">
+            <div class=" col-8 col-md-6 m-auto">
+                <div class="card ">
+                    <img src="{{ user.profile.image.url }}" class="card-img-top" alt="...">
+                    <div class="card-body">
+                        <h5 class="card-title text-center">{{ profile.username }}</h5>
+
+                    </div>
+                </div>
+        </div>
+        </div>
+
+
         <div class="row">
-            <div class="col-3 align-self-start">
+            <div class="d-none d-lg-block col-3 align-self-start">
                 <div class="card">
                     <img src="{{ user.profile.image.url }}" class="card-img-top" alt="...">
                     <div class="card-body">
@@ -17,7 +30,7 @@
                 </div>
             </div>
 
-            <div class="col-9">
+            <div class="col-12 col-lg-9">
                 {% for sub in subscriptions %}
                     <div class="row no-gutters border rounded overflow-hidden flex-md-row m-2 mb-4  shadow-sm h-md-350 position-relative">
                         <div class="col-auto d-none d-lg-block">
