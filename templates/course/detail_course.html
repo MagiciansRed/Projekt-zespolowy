@@ -36,7 +36,9 @@
             <p class="article-content"> Description: {{ course_detail.description }}</p>
             {% if subscription_state == True %}
                 <p class="article-content text-info"> You are subscribed to this course.</p>
-                <a class="btn btn-primary" href="{% url 'course:learn_course' course_detail.slug %}">Learn</a>
+                {% if words_length > 0 %}
+                     <a class="btn btn-primary" href="{% url 'course:learn_course' course_detail.slug %}">Learn</a>
+                {% endif %}
             {% endif %}
 
         {% if subscription_state == False %}

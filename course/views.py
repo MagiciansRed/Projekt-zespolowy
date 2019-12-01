@@ -22,6 +22,7 @@ def detail_course_view(request, slug):
 
     words = Word.objects.all().filter(course=course)
     context['words'] = words
+    context['words_length'] = len(words)
 
     current_user = request.user
     sub = Subscription()
