@@ -10,7 +10,7 @@ from django.utils.text import slugify
 
 # Create your views here.
 
-
+@login_required
 def course_list_view(request):
     context = {}
     courses = Course.objects.all()
@@ -19,6 +19,7 @@ def course_list_view(request):
     return render(request, 'course/courses.html', context)
 
 
+@login_required
 def detail_course_view(request, slug):
     context = {}
     course = get_object_or_404(Course, slug=slug)
