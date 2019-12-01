@@ -170,6 +170,8 @@ def edit_course_view(request, slug):
             word.target_word = data['target_word']
             word.course = course
             try:
+                print(word.source_word)
+                print(word.target_word)
                 word.save()
                 for sub in subscribers:
                     create_word_detail(word, sub.user)
