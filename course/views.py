@@ -192,21 +192,28 @@ def learn_course_view(request, slug):
     context['course_detail'] = course
 
     word = Word.objects.all().filter(course=course).order_by("?").first()
-
     context['word'] = word
-    context['correct'] = ""
-    context['wrong'] = ""
 
     current_user = request.user
+    word_details_query = WordDetails.objects.filter(word=word, user=current_user)
+    word_details = word_details_query[0]
 
-    if request.POST.get('check'):
+    if request.POST.get('next'):
         learn_word_form = LearnWordForm(request.POST)
         context['learn_form'] = learn_word_form
-        if learn_word_form.is_valid():
-            data = learn_word_form.cleaned_data
-            answer = data['source_word']
+
+        word_details.value = word_details.value + 1
+        if word_details.value >= 5:
+            word_details.is_learnt = True
+        else:
+            word_details.is_learnt = False
+        word_details.save()
+
     else:
         learn_word_form = LearnWordForm()
         context['learn_form'] = learn_word_form
 
     return render(request, 'course/learn_course.html', context)
+
+
+

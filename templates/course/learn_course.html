@@ -7,7 +7,7 @@
 
     <div class="row">
         <div class="col-12">
-            <h1>Target word</h1>
+            <h1>{{word.target_word}}</h1>
         </div>
     </div>
 
@@ -19,17 +19,25 @@
 
     <div class="row">
         <div class="col-12">
-            <h4 id="translated">Source word</h4>
+            <h4 id="translated">{{word.source_word}}</h4>
         </div>
     </div>
 
-{#    <div class="row">#}
-{#        <div class="col-12">#}
-{#            <div class="alert alert-success" role="alert">#}
-{#                <span>Correct!</span>#}
-{#            </div>#}
-{#        </div>#}
-{#    </div>#}
+    <div class="row " id="correctInfo">
+        <div class="col-12">
+            <div class="alert alert-success" role="alert">
+                <span>Correct!</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="row" id="wrongInfo">
+        <div class="col-12">
+            <div class="alert alert-danger" role="alert">
+                <span>Wrong!</span>
+            </div>
+        </div>
+    </div>
 
     <div class="row">
         <div class="col-12">
@@ -37,10 +45,13 @@
                 {% csrf_token %}
                 <fieldset class="form-group">
                     <legend class="border-bottom mb-4">Enter translation</legend>
-                    {{ learn_form|crispy }}
+                    <label for="inputSource">Translation</label><input type="text" name="source_word" id="inputSource" class="form-control mb-1" placeholder="Source word" required >
                 </fieldset>
-                <div class="form-group">
-                    <button class="btn btn-outline-info" name="check" value="Check" type="submit">Check</button>
+                <div class="form-group" id="checkButton">
+                    <button class="btn btn-outline-info" name="check2" id="checkButton" value="Check" type="button">Check</button>
+                </div>
+                <div class="form-group" id="nextButton">
+                    <button class="btn btn-outline-info" name="next" value="Next" type="submit">Next</button>
                 </div>
             </form>
         </div>
@@ -49,10 +60,30 @@
     <script type="application/javascript">
 
         $('#translated').hide();
+        $('#correctInfo').hide();
+        $('#wrongInfo').hide();
+        $('#nextButton').hide();
 
         $('#show-translation').click(function () {
             $('#translated').slideToggle();
+        });
+
+        $('#checkButton').click(function () {
+            let input = $('#inputSource').val();
+            if(input === '{{ word.source_word }}') {
+                $('#wrongInfo').hide();
+                $('#correctInfo').show();
+                $('#checkButton').hide();
+                $('#nextButton').show();
+                $('#inputSource').prop( "disabled", true );
+            } else {
+                $('#correctInfo').hide();
+                $('#wrongInfo').hide().slideDown(200);
+                $('#nextButton').hide();
+            }
         })
+
+
 
     </script>
 
