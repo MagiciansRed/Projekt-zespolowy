@@ -1,9 +1,13 @@
+import random
+
 from django.contrib.auth.decorators import login_required
 from django.db import IntegrityError
 from django.shortcuts import render, get_object_or_404, redirect
 from course.models import Course, Subscription, Word, WordDetails
 from course.forms import CourseCreateForm, EditCourseForm, AddWordForm, RemoveWordForm, LearnWordForm
 from django.utils.text import slugify
+
+
 # Create your views here.
 
 
@@ -63,13 +67,21 @@ def detail_course_view(request, slug):
 
 
 def create_word_detail(words, user):
-    for word in words:
+    if isinstance(words, Word):
         detail = WordDetails()
-        detail.word = word
+        detail.word = words
         detail.user = user
         detail.value = 0
-        detail.is_learnt = True
+        detail.is_learnt = False
         detail.save()
+    else:
+        for word in words:
+            detail = WordDetails()
+            detail.word = word
+            detail.user = user
+            detail.value = 0
+            detail.is_learnt = False
+            detail.save()
 
 
 def remove_word_detail(words, user):
@@ -92,7 +104,7 @@ def create_course_view(request):
             course.name = data['name']
             course.description = data['description']
             course.author = request.user
-            if(data['image']):
+            if (data['image']):
                 course.image = data['image']
 
             try:
@@ -151,6 +163,7 @@ def edit_course_view(request, slug):
     if request.POST.get('add_word'):
         word_form = AddWordForm(request.POST, instance=request.user)
         word = Word()
+        subscribers = Subscription.objects.all().filter(course=course)
         if word_form.is_valid():
             data = word_form.cleaned_data
             word.source_word = data['source_word']
@@ -158,6 +171,8 @@ def edit_course_view(request, slug):
             word.course = course
             try:
                 word.save()
+                for sub in subscribers:
+                    create_word_detail(word, sub.user)
                 context['word_success'] = "Word added successfully."
             except IntegrityError:
                 context['word_error'] = "You have already such word. Choose a different one."
@@ -191,30 +206,57 @@ def learn_course_view(request, slug):
     context = {}
     course = get_object_or_404(Course, slug=slug)
     context['course_detail'] = course
-
-    word = Word.objects.all().filter(course=course).order_by("?").first()
-    context['word'] = word
+    all_words = Word.objects.all().filter(course=course)
+    is_word_to_learn = False
+    context['learn_all'] = ""
 
     current_user = request.user
-    word_details_query = WordDetails.objects.filter(word=word, user=current_user)
-    word_details = word_details_query[0]
 
-    if request.POST.get('next'):
-        learn_word_form = LearnWordForm(request.POST)
-        context['learn_form'] = learn_word_form
+    for w in all_words:
+        if not checkIfLearnedWord(w, current_user):
+            is_word_to_learn = True
 
-        word_details.value = word_details.value + 1
-        if word_details.value >= 5:
-            word_details.is_learnt = True
+    if is_word_to_learn:
+        words = get_all_unlearned_words(all_words, current_user)
+        word = random.choice(words)
+        context['word'] = word
+        word_details_query = WordDetails.objects.filter(word=word, user=current_user)
+        word_details = word_details_query[0]
+
+        if request.POST.get('next'):
+            learn_word_form = LearnWordForm(request.POST)
+            context['learn_form'] = learn_word_form
+
+            word_details.value = word_details.value + 1
+            if word_details.value >= 5:
+                word_details.is_learnt = True
+            else:
+                word_details.is_learnt = False
+            word_details.save()
+
         else:
-            word_details.is_learnt = False
-        word_details.save()
-
+            learn_word_form = LearnWordForm()
+            context['learn_form'] = learn_word_form
     else:
-        learn_word_form = LearnWordForm()
-        context['learn_form'] = learn_word_form
+        context['learn_all'] = "You have learned all the words."
+        render(request, 'course/learn_course.html', context)
 
     return render(request, 'course/learn_course.html', context)
 
 
+def checkIfLearnedWord(word, user):
+    query = WordDetails.objects.filter(word=word, user=user)
+    if len(query) > 0:
+        word = query[0]
+        return word.is_learnt
+    else:
+        return True
 
+
+def get_all_unlearned_words(all_words, current_user):
+    result = []
+    for word in all_words:
+        if not checkIfLearnedWord(word, current_user):
+            result.append(word)
+
+    return result
