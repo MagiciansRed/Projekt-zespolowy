@@ -1,7 +1,7 @@
 from django.contrib.auth.decorators import login_required
 from django.db import IntegrityError
 from django.shortcuts import render, get_object_or_404, redirect
-from course.models import Course, Subscription, Word
+from course.models import Course, Subscription, Word, WordDetails
 from course.forms import CourseCreateForm, EditCourseForm, AddWordForm, RemoveWordForm, LearnWordForm
 from django.utils.text import slugify
 # Create your views here.
@@ -39,12 +39,14 @@ def detail_course_view(request, slug):
                 context['subscription_state'] = True
                 if request.POST.get('unsubscribe'):
                     e.delete()
+                    remove_word_detail(words, current_user)
                     context['subscription_state'] = False
                 break
 
         if request.POST.get('subscribe'):
             sub.course = course
             sub.user = current_user
+            create_word_detail(words, current_user)
             sub.save()
             context['subscription_state'] = True
     else:
@@ -52,10 +54,29 @@ def detail_course_view(request, slug):
         if request.POST.get('subscribe'):
             sub.course = course
             sub.user = current_user
+            create_word_detail(words, current_user)
             sub.save()
             context['subscription_state'] = True
 
     return render(request, 'course/detail_course.html', context)
+
+
+def create_word_detail(words, user):
+    for word in words:
+        detail = WordDetails()
+        detail.word = word
+        detail.user = user
+        detail.value = 0
+        detail.is_learnt = True
+        detail.save()
+
+
+def remove_word_detail(words, user):
+    word_details = WordDetails.objects.all()
+    for word in word_details:
+        for w in words:
+            if word.word == w and word.user == user:
+                word.delete()
 
 
 @login_required
@@ -170,14 +191,20 @@ def learn_course_view(request, slug):
     course = get_object_or_404(Course, slug=slug)
     context['course_detail'] = course
 
-    words = Word.objects.all().filter(course=course)
-    context['words'] = words
+    word = Word.objects.all().filter(course=course).order_by("?").first()
+
+    context['word'] = word
+    context['correct'] = ""
+    context['wrong'] = ""
 
     current_user = request.user
 
     if request.POST.get('check'):
         learn_word_form = LearnWordForm(request.POST)
         context['learn_form'] = learn_word_form
+        if learn_word_form.is_valid():
+            data = learn_word_form.cleaned_data
+            answer = data['source_word']
     else:
         learn_word_form = LearnWordForm()
         context['learn_form'] = learn_word_form
