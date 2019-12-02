@@ -6,6 +6,7 @@ from django.shortcuts import render, get_object_or_404, redirect
 from course.models import Course, Subscription, Word, WordDetails
 from course.forms import CourseCreateForm, EditCourseForm, AddWordForm, RemoveWordForm, LearnWordForm
 from django.utils.text import slugify
+from django.core.paginator import Paginator
 
 
 # Create your views here.
@@ -14,8 +15,11 @@ from django.utils.text import slugify
 def course_list_view(request):
     context = {}
     courses = Course.objects.all()
-    context['courses'] = courses
+    paginator = Paginator(courses, 3)
 
+    page = request.GET.get('page')
+    courses = paginator.get_page(page)
+    context['courses'] = courses
     return render(request, 'course/courses.html', context)
 
 
