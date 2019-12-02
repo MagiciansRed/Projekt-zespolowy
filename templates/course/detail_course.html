@@ -3,45 +3,87 @@
 
 {% block content %}
     <style>
-    .account-img {
-      border: 1px solid #ddd;
-      border-radius: 4px;
-      padding: 5px;
-      width: 200px;
-      height: 200px;
-    }
-  </style>
+        .account-img {
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            padding: 5px;
+            width: 200px;
+            height: 200px;
+        }
+
+        .dots {
+            text-decoration: none;
+        }
+
+        .dots:hover {
+            text-decoration: none;
+        }
+
+        .dots:after {
+            content: '\2807';
+            font-size: 3em;
+            color: #2e2e2e
+        }
+    </style>
 
     <article class="media content-section">
-          <img class="account-img" src="{{ course_detail.author.profile.image.url }}">
-          <div class="media-body">
+        <img class="account-img" src="{{ course_detail.image.url }}">
+        <div class="media-body p-2">
             <div class="article-metadata">
-              <h2 class="account-heading"> Author: {{ course_detail.author }}</h2>
+                <h2 class="account-heading"> Author: {{ course_detail.author }}</h2>
             </div>
             <h3 class="account-heading"> Course name: {{ course_detail.name }}</h3>
             <p class="article-content"> Description: {{ course_detail.description }}</p>
-          </div>
-        </article>
+            {% if subscription_state == True %}
+                <p class="article-content text-info"> You are subscribed to this course.</p>
+                {% if words_length > 0 %}
+                     <a class="btn btn-primary" href="{% url 'course:learn_course' course_detail.slug %}">Learn</a>
+                {% endif %}
+            {% endif %}
 
-    {% if subscription_state == True %}
-        <form method="POST"> {% csrf_token %}
-            <button class="btn btn-lg btn-success btn-block btn-d" name="subscribe" value="" type="submit" disabled>
-                Subscribed
-            </button>
-            <button class="btn btn-lg btn-danger btn-block btn-d" name="unsubscribe" value="Unsubscribe" type="submit">
-                Unsubscribe
-            </button>
-        </form>
-    {% else %}
-        <form method="POST"> {% csrf_token %}
-            <button class="btn btn-lg btn-primary btn-block " name="subscribe" value="Subscribe" type="submit">
-                Subscribe
-            </button>
-        </form>
-    {% endif %}
+        {% if subscription_state == False %}
+            <form method="POST"> {% csrf_token %}
+                <button class="btn btn-lg btn-primary  " name="subscribe" value="Subscribe" type="submit">
+                    Subscribe
+                </button>
+            </form>
+        {% endif %}
+        </div>
+
+        {% if request.user == course_detail.author or subscription_state == True %}
+            <div class="dropleft show ">
+                <a class="dots" href="#" role="button" id="dropdownMenuLink"
+                   data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                </a>
+
+                <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                    {% if subscription_state == True %}
+                        <form method="POST"> {% csrf_token %}
+                            <button class="dropdown-item" name="unsubscribe" value="Unsubscribe"
+                                    type="submit">
+                                Unsubscribe
+                            </button>
+                        </form>
+                    {% endif %}
+
+                    {% if request.user == course_detail.author %}
+
+                        <a class="dropdown-item" href="{% url 'course:edit_course' course_detail.slug %}">Edit</a>
+
+                        <form method="POST"> {% csrf_token %}
+                            <button class="dropdown-item text-danger" name="delete" value="Delete" type="submit">
+                                Delete course
+                            </button>
+                        </form>
+
+                    {% endif %}
+                </div>
+            </div>
+        {% endif %}
+    </article>
 
 
-    <table class="table">
+    <table class="table mt-2">
         <thead>
         <tr>
             <th scope="col">Source</th>
@@ -49,27 +91,20 @@
         </tr>
         </thead>
         <tbody>
-        {% for word in words %}
+        {% if words %}
+            {% for word in words %}
+                <tr>
+                    <td>{{ word.source_word }}</td>
+                    <td>{{ word.target_word }}</td>
+                </tr>
+            {% endfor %}
+        {% else %}
             <tr>
-                <td>{{ word.source_word }}</td>
-                <td>{{ word.target_word }}</td>
-             </tr>
-        {% endfor %}
+                <td>Looks like the course has no words yet.</td>
+            </tr>
+        {% endif %}
         </tbody>
     </table>
-
-    {% if request.user == course_detail.author %}
-
-        <form method="POST"> {% csrf_token %}
-            <button class="btn btn-lg btn-danger btn-block " name="delete" value="Delete" type="submit">Delete course
-            </button>
-        </form>
-
-        <a href="{% url 'course:edit_course' course_detail.slug %}">EDIT</a>
-
-    {% endif %}
-
-
 
 
 {% endblock content %}
