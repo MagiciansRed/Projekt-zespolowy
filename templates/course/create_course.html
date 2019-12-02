@@ -13,5 +13,8 @@
           </div>
       </form>
 
+    {% if course_error != "" %}
+        <p> {{ course_error }}  </p>
+    {% endif %}
 
 {% endblock content %}

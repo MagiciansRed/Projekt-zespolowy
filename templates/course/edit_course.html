@@ -1,0 +1,87 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+
+
+{% block content %}
+
+    {% if course_unauthorized != "" %}
+        <div class="alert alert-danger" role="alert">
+                {{ course_unauthorized }}
+            </div>
+    {% else %}
+
+        <form method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+            <fieldset class="form-group">
+                <legend class="border-bottom mb-4">Edit course</legend>
+                {{ course_form|crispy }}
+            </fieldset>
+            <div class="form-group">
+                <button class="btn btn-outline-info" name="edit" value="Edit" type="submit">Update</button>
+            </div>
+        </form>
+
+        {% if course_error != "" %}
+            <div class="alert alert-danger" role="alert">
+                {{ course_error }}
+            </div>
+        {% endif %}
+
+        {% if word_success != "" %}
+            <div class="alert alert-success" role="alert">
+                {{ word_success }}
+            </div>
+        {% endif %}
+
+        <form method="POST" enctype="multipart/form-data" id="word-form">
+            {% csrf_token %}
+            <fieldset class="form-group">
+                <legend class="border-bottom mb-4">Add word</legend>
+                {{ word_form|crispy }}
+            </fieldset>
+            <div class="form-group">
+                <button class="btn btn-outline-info" name="add_word" value="Add" type="submit">Add</button>
+            </div>
+        </form>
+
+        {% if word_error != "" %}
+            <div class="alert alert-danger" role="alert">
+                {{ word_error }}
+            </div>
+        {% endif %}
+
+        <form method="POST" enctype="multipart/form-data" >
+            {% csrf_token %}
+            <fieldset class="form-group">
+                <legend class="border-bottom mb-4">Remove word</legend>
+                {{ word_remove_form|crispy }}
+            </fieldset>
+            <div class="form-group">
+                <button class="btn btn-outline-info" name="remove_word" value="Remove" type="submit">Remove</button>
+            </div>
+        </form>
+
+         {% if word_success_delete != "" %}
+            <div class="alert alert-success" role="alert">
+                {{ word_success_delete }}
+            </div>
+        {% endif %}
+
+
+        {% comment %}<script type="application/javascript">
+
+            $("#word-form").hide();
+
+            $("#addWord").click(function () {
+                if ($("#word-form").is(":hidden")) {
+                    $("#word-form").slideDown(500);
+                }
+            });
+
+        </script>{% endcomment %}
+
+    {% endif %}
+
+
+
+{% endblock content %}

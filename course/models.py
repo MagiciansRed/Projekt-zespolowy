@@ -9,7 +9,7 @@ from django.utils.text import slugify
 class Course(models.Model):
     name = models.CharField(max_length=60, null=False, blank=False)
     description = models.CharField(default='This is a course description.', max_length=600, null=False, blank=False)
-    image = models.ImageField(default='default.jpg', upload_to='course_banners')
+    image = models.ImageField(default='course_default.png', upload_to='course_banners')
     author = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     date_added = models.DateTimeField(auto_now_add=True, verbose_name="Date added")
     slug = models.SlugField(blank=True, unique=True)
@@ -28,7 +28,7 @@ class Subscription(models.Model):
 
 class Word(models.Model):
     course = models.ForeignKey(Course, on_delete=models.CASCADE)
-    source_word = models.CharField(max_length=60, null=False, blank=False)
+    source_word = models.CharField(max_length=60, unique=True, null=False, blank=False)
     target_word = models.CharField(max_length=60, null=False, blank=False)
 
     def __str__(self):

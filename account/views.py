@@ -53,6 +53,7 @@ def login_view(request):
     context['login_form'] = form
     return render(request, 'account/login.html', context)
 
+
 @login_required
 def profile_view(request):
     if request.method == 'POST':
@@ -68,7 +69,7 @@ def profile_view(request):
     else:
         u_form = AccountUpdateForm(instance=request.user)
         p_form = ProfileUpdateForm(instance=request.user.profile)
-    
+
     context = {
         'u_form': u_form,
         'p_form': p_form
