@@ -2,6 +2,7 @@ import random
 
 from django.contrib.auth.decorators import login_required
 from django.db import IntegrityError
+from django.http import HttpResponseRedirect
 from django.shortcuts import render, get_object_or_404, redirect
 from course.models import Course, Subscription, Word, WordDetails
 from course.forms import CourseCreateForm, EditCourseForm, AddWordForm, RemoveWordForm, LearnWordForm
@@ -149,6 +150,10 @@ def edit_course_view(request, slug):
             data = course_form.cleaned_data
             if data['name']:
                 course.name = data['name']
+            if data['source_language']:
+                course.source_language = data['source_language']
+            if data['target_language']:
+                course.target_language = data['target_language']
             if data['description']:
                 course.description = data['description']
             course.author = request.user
@@ -181,6 +186,7 @@ def edit_course_view(request, slug):
                 for sub in subscribers:
                     create_word_detail(word, sub.user)
                 context['word_success'] = "Word added successfully."
+                #return HttpResponseRedirect("/course/" + course.slug + "/edit_course")
             except IntegrityError:
                 context['word_error'] = "You have already such word. Choose a different one."
 

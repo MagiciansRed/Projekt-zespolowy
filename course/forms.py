@@ -4,22 +4,26 @@ from course.models import Course, Word
 
 class CourseCreateForm(forms.ModelForm):
     name = forms.CharField(max_length=60)
+    source_language = forms.CharField(max_length=60)
+    target_language = forms.CharField(max_length=60)
     description = forms.CharField(max_length=600)
     image = forms.ImageField(required=False)
 
     class Meta:
         model = Course
-        fields = ("name", "description", "image")
+        fields = ("name", "source_language", "target_language", "description", "image")
 
 
 class EditCourseForm(forms.ModelForm):
     name = forms.CharField(max_length=60)
+    source_language = forms.CharField(max_length=60)
+    target_language = forms.CharField(max_length=60)
     description = forms.CharField(max_length=600)
     image = forms.ImageField(required=False)
 
     class Meta:
         model = Course
-        fields = ("name", "description", "image")
+        fields = ("name", "source_language", "target_language", "description", "image")
 
 
 class AddWordForm(forms.ModelForm):

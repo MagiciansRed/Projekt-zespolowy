@@ -37,7 +37,16 @@
             {% csrf_token %}
             <fieldset class="form-group">
                 <legend class="border-bottom mb-4">Add word</legend>
-                {{ word_form|crispy }}
+                <div class="row">
+                    <div class="col-3">
+                        <p>{{ course_detail.source_language }}</p>
+                        {{ word_form.source_word | as_crispy_field }}
+                    </div>
+                    <div class="col-3">
+                        <p>{{ course_detail.target_language }}</p>
+                        {{ word_form.target_word | as_crispy_field }}
+                    </div>
+                </div>
             </fieldset>
             <div class="form-group">
                 <button class="btn btn-outline-info" name="add_word" value="Add" type="submit">Add</button>
