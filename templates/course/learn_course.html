@@ -108,11 +108,14 @@
             $('#correctInfo').hide();
             $('#wrongInfo').hide();
             $('#nextButton').hide();
+            $('#inputSeenTranslation').hide();
 
             $('#show-translation').click(function () {
                 $('#translated').slideToggle();
                 $('#translated-language').slideToggle();
+                $('#inputSeenTranslation').prop( "checked", true );
             });
+
 
             $('#checkButton').click(function () {
                 let input = $('#inputSource').val();
