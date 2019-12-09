@@ -108,6 +108,8 @@ def create_course_view(request):
         if course_form.is_valid():
             data = course_form.cleaned_data
             course.name = data['name']
+            course.target_language = data['target_language']
+            course.source_language = data['source_language']
             course.description = data['description']
             course.author = request.user
             if (data['image']):

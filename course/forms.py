@@ -4,8 +4,8 @@ from course.models import Course, Word
 
 class CourseCreateForm(forms.ModelForm):
     name = forms.CharField(max_length=60)
-    source_language = forms.CharField(max_length=60)
-    target_language = forms.CharField(max_length=60)
+    source_language = forms.CharField(max_length=60, label='Language known')
+    target_language = forms.CharField(max_length=60, label='Language to learn')
     description = forms.CharField(max_length=600)
     image = forms.ImageField(required=False)
 
@@ -16,8 +16,8 @@ class CourseCreateForm(forms.ModelForm):
 
 class EditCourseForm(forms.ModelForm):
     name = forms.CharField(max_length=60)
-    source_language = forms.CharField(max_length=60)
-    target_language = forms.CharField(max_length=60)
+    source_language = forms.CharField(max_length=60, label='Language known')
+    target_language = forms.CharField(max_length=60, label='Language to learn')
     description = forms.CharField(max_length=600)
     image = forms.ImageField(required=False)
 
@@ -27,8 +27,8 @@ class EditCourseForm(forms.ModelForm):
 
 
 class AddWordForm(forms.ModelForm):
-    target_word = forms.CharField(max_length=60)
-    source_word = forms.CharField(max_length=60)
+    target_word = forms.CharField(max_length=60, label='Language to learn')
+    source_word = forms.CharField(max_length=60, label='Language known')
 
     class Meta:
         model = Word
@@ -36,7 +36,7 @@ class AddWordForm(forms.ModelForm):
 
 
 class RemoveWordForm(forms.ModelForm):
-    source_word = forms.ModelChoiceField(queryset=Word.objects.all())
+    source_word = forms.ModelChoiceField(queryset=Word.objects.all(), label='Language to learn')
 
     class Meta:
         model = Word
@@ -44,9 +44,9 @@ class RemoveWordForm(forms.ModelForm):
 
 
 class LearnWordForm(forms.ModelForm):
-    source_word = forms.CharField(max_length=60)
+    target_word = forms.CharField(max_length=60)
     has_seen_translation = forms.BooleanField(required=False)
 
     class Meta:
         model = Word
-        fields = ('source_word', 'has_seen_translation',)
+        fields = ('target_word', 'has_seen_translation',)

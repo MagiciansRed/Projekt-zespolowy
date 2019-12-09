@@ -39,11 +39,11 @@
                 <legend class="border-bottom mb-4">Add word</legend>
                 <div class="row">
                     <div class="col-3">
-                        <p>{{ course_detail.source_language }}</p>
+                        <p class="text-uppercase">{{ course_detail.source_language }}</p>
                         {{ word_form.source_word | as_crispy_field }}
                     </div>
                     <div class="col-3">
-                        <p>{{ course_detail.target_language }}</p>
+                        <p class="text-uppercase">{{ course_detail.target_language }}</p>
                         {{ word_form.target_word | as_crispy_field }}
                     </div>
                 </div>
