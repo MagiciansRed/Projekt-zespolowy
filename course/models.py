@@ -8,6 +8,8 @@ from django.utils.text import slugify
 # Create your models here.
 class Course(models.Model):
     name = models.CharField(max_length=60, null=False, blank=False)
+    source_language = models.CharField(max_length=60, default="source", null=False, blank=False)
+    target_language = models.CharField(max_length=60, default="target", null=False, blank=False)
     description = models.CharField(default='This is a course description.', max_length=600, null=False, blank=False)
     image = models.ImageField(default='course_default.png', upload_to='course_banners')
     author = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
@@ -32,7 +34,7 @@ class Word(models.Model):
     target_word = models.CharField(max_length=60, null=False, blank=False)
 
     def __str__(self):
-        return self.course.name + "-" + self.source_word
+        return self.source_word
 
 
 class WordDetails(models.Model):

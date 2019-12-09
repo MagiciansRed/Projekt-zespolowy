@@ -86,16 +86,16 @@
     <table class="table mt-2">
         <thead>
         <tr>
-            <th scope="col">Source</th>
-            <th scope="col">Target</th>
+            <th scope="col">{{course_detail.target_language}}</th>
+            <th scope="col">{{course_detail.source_language}}</th>
         </tr>
         </thead>
         <tbody>
         {% if words %}
             {% for word in words %}
                 <tr>
-                    <td>{{ word.source_word }}</td>
                     <td>{{ word.target_word }}</td>
+                    <td>{{ word.source_word }}</td>
                 </tr>
             {% endfor %}
         {% else %}

@@ -2,6 +2,7 @@ import random
 
 from django.contrib.auth.decorators import login_required
 from django.db import IntegrityError
+from django.http import HttpResponseRedirect
 from django.shortcuts import render, get_object_or_404, redirect
 from course.models import Course, Subscription, Word, WordDetails
 from course.forms import CourseCreateForm, EditCourseForm, AddWordForm, RemoveWordForm, LearnWordForm
@@ -107,6 +108,8 @@ def create_course_view(request):
         if course_form.is_valid():
             data = course_form.cleaned_data
             course.name = data['name']
+            course.target_language = data['target_language']
+            course.source_language = data['source_language']
             course.description = data['description']
             course.author = request.user
             if (data['image']):
@@ -149,6 +152,10 @@ def edit_course_view(request, slug):
             data = course_form.cleaned_data
             if data['name']:
                 course.name = data['name']
+            if data['source_language']:
+                course.source_language = data['source_language']
+            if data['target_language']:
+                course.target_language = data['target_language']
             if data['description']:
                 course.description = data['description']
             course.author = request.user
@@ -181,6 +188,7 @@ def edit_course_view(request, slug):
                 for sub in subscribers:
                     create_word_detail(word, sub.user)
                 context['word_success'] = "Word added successfully."
+                #return HttpResponseRedirect("/course/" + course.slug + "/edit_course")
             except IntegrityError:
                 context['word_error'] = "You have already such word. Choose a different one."
 
@@ -234,7 +242,10 @@ def learn_course_view(request, slug):
             learn_word_form = LearnWordForm(request.POST)
             context['learn_form'] = learn_word_form
 
-            word_details.value = word_details.value + 1
+            has_seen_translation_checkbox = request.POST.get('has_seen_translation')
+            if has_seen_translation_checkbox is None:
+                word_details.value = word_details.value + 1
+
             if word_details.value >= 5:
                 word_details.is_learnt = True
             else:
