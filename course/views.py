@@ -240,7 +240,10 @@ def learn_course_view(request, slug):
             learn_word_form = LearnWordForm(request.POST)
             context['learn_form'] = learn_word_form
 
-            word_details.value = word_details.value + 1
+            has_seen_translation_checkbox = request.POST.get('has_seen_translation')
+            if has_seen_translation_checkbox is None:
+                word_details.value = word_details.value + 1
+
             if word_details.value >= 5:
                 word_details.is_learnt = True
             else:

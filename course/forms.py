@@ -45,7 +45,8 @@ class RemoveWordForm(forms.ModelForm):
 
 class LearnWordForm(forms.ModelForm):
     source_word = forms.CharField(max_length=60)
+    has_seen_translation = forms.BooleanField(required=False)
 
     class Meta:
         model = Word
-        fields = ('source_word',)
+        fields = ('source_word', 'has_seen_translation',)
