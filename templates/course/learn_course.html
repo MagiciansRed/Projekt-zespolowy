@@ -15,6 +15,13 @@
         });
     </script>
 
+    <style>
+        .language-info {
+            color: #4f4f4f;
+
+        }
+    </style>
+
     {% if learn_all != "" %}
         <p>{{ learn_all }}</p>
     {% else %}
@@ -22,7 +29,7 @@
             <div class="col-4">
                 <div class="row">
                     <div class="col-12">
-                        <p class="text-uppercase mb-0">{{ course_detail.target_language }}</p>
+                        <p class="text-uppercase font-weight-bold language-info mb-0">{{ course_detail.target_language }}</p>
                         <h1>{{ word.target_word }}</h1>
                     </div>
                 </div>
@@ -36,7 +43,7 @@
                 <div class="row">
                     <div class="col-12">
                         <p id="translated-language"
-                           class="text-uppercase mb-0 mt-2">{{ course_detail.source_language }}</p>
+                           class="text-uppercase font-weight-bold language-info  mb-0 mt-2">{{ course_detail.source_language }}</p>
                         <h2 id="translated">{{ word.source_word }}</h2>
                     </div>
                 </div>
@@ -65,8 +72,8 @@
                             {% csrf_token %}
                             <fieldset class="form-group">
                                 <legend class="border-bottom mb-4">Enter translation</legend>
-                                <label for="inputSource">Translation <span
-                                        class="text-uppercase">{{ course_detail.source_language }}</span>
+                                <label for="inputSource">Translation (<span
+                                        class="text-uppercase font-weight-bold language-info">{{ course_detail.source_language }}</span>)
                                 </label><input type="text" name="source_word"
                                                id="inputSource"
                                                class="form-control mb-1"
