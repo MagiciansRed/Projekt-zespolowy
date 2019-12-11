@@ -146,7 +146,9 @@ def edit_course_view(request, slug):
 
     if request.POST.get('edit'):
         course_form = EditCourseForm(request.POST, request.FILES, instance=request.user,
-                                     initial={'name': course.name, 'description': course.description})
+                                     initial={'name': course.name, 'description': course.description,
+                                              'source_language': course.source_language,
+                                              'target_language': course.target_language}, )
 
         if course_form.is_valid():
             data = course_form.cleaned_data
@@ -170,7 +172,10 @@ def edit_course_view(request, slug):
                 context['course_error'] = "You have already created a course with this name. Choose a different one."
     else:
         course_form = EditCourseForm(instance=request.user, initial={'name': course.name,
-                                                                     'description': course.description})
+                                                                     'description': course.description,
+                                                                     'source_language': course.source_language,
+                                                                     'target_language': course.target_language},
+                                     )
 
     if request.POST.get('add_word'):
         word_form = AddWordForm(request.POST, instance=request.user)
@@ -188,7 +193,7 @@ def edit_course_view(request, slug):
                 for sub in subscribers:
                     create_word_detail(word, sub.user)
                 context['word_success'] = "Word added successfully."
-                #return HttpResponseRedirect("/course/" + course.slug + "/edit_course")
+                # return HttpResponseRedirect("/course/" + course.slug + "/edit_course")
             except IntegrityError:
                 context['word_error'] = "You have already such word. Choose a different one."
 
