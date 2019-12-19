@@ -124,7 +124,7 @@
 
 
             $('#checkButton').click(function () {
-                let input = $('#inputSource').val();
+                let input = $('#inputSource').val().trim();
                 if (input === '{{ word.source_word }}') {
                     $('#wrongInfo').hide();
                     $('#correctInfo').show();
