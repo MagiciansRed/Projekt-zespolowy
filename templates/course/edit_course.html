@@ -4,10 +4,16 @@
 
 {% block content %}
 
+    <style>
+        .language-info {
+            color: #4f4f4f;
+        }
+    </style>
+
     {% if course_unauthorized != "" %}
         <div class="alert alert-danger" role="alert">
-                {{ course_unauthorized }}
-            </div>
+            {{ course_unauthorized }}
+        </div>
     {% else %}
 
         <form method="POST" enctype="multipart/form-data">
@@ -37,7 +43,16 @@
             {% csrf_token %}
             <fieldset class="form-group">
                 <legend class="border-bottom mb-4">Add word</legend>
-                {{ word_form|crispy }}
+                <div class="row">
+                    <div class="col-3">
+                        <p class="text-uppercase font-weight-bold language-info">{{ course_detail.source_language }}</p>
+                        {{ word_form.source_word | as_crispy_field }}
+                    </div>
+                    <div class="col-3">
+                        <p class="text-uppercase font-weight-bold language-info">{{ course_detail.target_language }}</p>
+                        {{ word_form.target_word | as_crispy_field }}
+                    </div>
+                </div>
             </fieldset>
             <div class="form-group">
                 <button class="btn btn-outline-info" name="add_word" value="Add" type="submit">Add</button>
@@ -50,7 +65,7 @@
             </div>
         {% endif %}
 
-        <form method="POST" enctype="multipart/form-data" >
+        <form method="POST" enctype="multipart/form-data">
             {% csrf_token %}
             <fieldset class="form-group">
                 <legend class="border-bottom mb-4">Remove word</legend>
@@ -61,7 +76,7 @@
             </div>
         </form>
 
-         {% if word_success_delete != "" %}
+        {% if word_success_delete != "" %}
             <div class="alert alert-success" role="alert">
                 {{ word_success_delete }}
             </div>

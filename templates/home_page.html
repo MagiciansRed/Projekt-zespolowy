@@ -1,17 +1,30 @@
 {% extends 'base.html' %}
-
+{% load static %}
 {% block content %}
 <style>
-    
+    .bg-image {
+        background-image: url('{% static 'learn.jpeg' %}');
+        background-size: cover;
+    }
+    .small-img {
+        width: 10rem;
+        height: 10rem;
+        margin: 0 auto;
+        padding-top: 3rem;
+    }
+
+    .text-min-height {
+        min-height: 4rem;
+    }
 </style>
 <main role="main">
 
     <!-- Main jumbotron for a primary marketing message or call to action -->
-    <div class="jumbotron bg-secondary text-light">
+    <div class="jumbotron text-dark bg-image">
       <div class="container">
-        <h1 class="display-3">Projekt zespolowy</h1>
-        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Ipsum vel dicta, doloribus tenetur doloremque itaque distinctio soluta sed consectetur, ut rerum ad vitae voluptatem corporis recusandae voluptatum voluptas nemo eos.</p>
-        <p><a class="btn btn-primary btn-lg" href="#" role="button">Learn more &raquo;</a></p>
+        <h1 class="display-3">&nbsp;</h1>
+        <h1 class="display-3">&nbsp;</h1>
+
       </div>
     </div>
 
@@ -19,23 +32,20 @@
       <!-- Example row of columns -->
       <div class="row">
         <div class="col-md-4">
-          <h2>Big collection of courses</h2>
-          <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Consequatur nesciunt tempore ea totam porro similique at consectetur, iste repellat eligendi voluptate modi nisi nostrum? Minima maxime voluptas facilis odio expedita? </p>
-          <p><a class="btn btn-secondary" href="#" role="button">View details &raquo;</a></p>
+          <h2 class="text-center text-min-height">Learn words from existing courses!</h2>
+            <img src="https://image.flaticon.com/icons/svg/148/148992.svg" alt="join" class="small-img d-flex justify-content-center ">
         </div>
         <div class="col-md-4">
-          <h2>Create your own courses!</h2>
-          <p>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Aut repellat necessitatibus expedita libero, ipsam incidunt impedit tenetur, recusandae aperiam qui eaque nisi! Possimus placeat sunt ipsa incidunt vel iusto cum!</p>
-          <p><a class="btn btn-secondary" href="#" role="button">View details &raquo;</a></p>
+          <h2 class="text-center text-min-height">Create your own courses! &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</h2>
+            <img src="https://image.flaticon.com/icons/svg/148/148926.svg" alt="create" class="small-img d-flex justify-content-center ">
         </div>
         <div class="col-md-4">
-          <h2>Active community</h2>
-          <p>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Quam delectus recusandae ex hic nulla nihil dolorum voluptatum fugit cum iure rem, optio ipsa necessitatibus in quasi distinctio eum natus sint.</p>
-          <p><a class="btn btn-secondary" href="#" role="button">View details &raquo;</a></p>
+          <h2 class="text-center text-min-height">Join the community! &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</h2>
+            <img src="https://image.flaticon.com/icons/svg/149/149066.svg" alt="community" class="small-img d-flex justify-content-center ">
         </div>
       </div>
 
-      <hr>
+
 
     </div> <!-- /container -->
 
