@@ -4,14 +4,29 @@
 {% block content %}
 
     <form method="POST" enctype="multipart/form-data">
-          {% csrf_token %}
-          <fieldset class="form-group">
-              {{ course_form|crispy }}
-          </fieldset>
-          <div class="form-group">
-              <button class="btn btn-outline-info" type="submit">Create</button>
-          </div>
-      </form>
+        {% csrf_token %}
+        <fieldset class="form-group">
+{#            {{ course_form|crispy }}#}
+            {{ course_form.name|as_crispy_field }}
+            {{ course_form.source_language|as_crispy_field }}
+            {{ course_form.target_language|as_crispy_field }}
+            <div id="div_id_description" class="form-group">
+                <label for="id_description" class="control-label  requiredField">
+                    Description<span class="asteriskField">*</span>
+                </label>
+                <div class="controls ">
+                    <textarea name="description" maxlength="600"
+                           class="textinput textInput form-control form-control" required id="id_description">
+                    </textarea>
+                </div>
+            </div>
+            {{ course_form.image|as_crispy_field }}
+
+        </fieldset>
+        <div class="form-group">
+            <button class="btn btn-outline-info" type="submit">Create</button>
+        </div>
+    </form>
 
     {% if course_error != "" %}
         <p> {{ course_error }}  </p>
