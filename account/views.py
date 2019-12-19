@@ -56,6 +56,8 @@ def login_view(request):
 
 @login_required
 def profile_view(request):
+    context = {}
+    context['update_success'] = False
     if request.method == 'POST':
         u_form = AccountUpdateForm(request.POST, instance=request.user)
         p_form = ProfileUpdateForm(request.POST,
@@ -64,14 +66,16 @@ def profile_view(request):
         if u_form.is_valid() and p_form.is_valid():
             u_form.save()
             p_form.save()
-            return redirect('profile')
+            context['update_success'] = True
+            context['u_form'] = u_form
+            context['p_form'] = p_form
+            return render(request, 'account/profile.html', context)
 
     else:
         u_form = AccountUpdateForm(instance=request.user)
         p_form = ProfileUpdateForm(instance=request.user.profile)
 
-    context = {
-        'u_form': u_form,
-        'p_form': p_form
-    }
+    context['u_form'] = u_form
+    context['p_form'] = p_form
+
     return render(request, 'account/profile.html', context)
