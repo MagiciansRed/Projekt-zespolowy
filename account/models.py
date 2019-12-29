@@ -36,7 +36,7 @@ class MyAccountManager(BaseUserManager):
 
 
 class Account(AbstractBaseUser):
-    email = models.EmailField(verbose_name="email", max_length=80, unique=True)
+    email = models.EmailField(verbose_name="email", max_length=254, unique=True)
     username = models.CharField(max_length=60, unique=True)
     streak = models.IntegerField(null=True)
     daily_target = models.IntegerField(null=True)
