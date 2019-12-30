@@ -46,10 +46,10 @@
     <form method="post" class="form-signin">{% csrf_token %}
         <h1 class="h3 mb-3 font-weight-normal text-center">Sign up</h1>
         <label for="inputEmail" class="sr-only">Email address</label>
-        <input type="email" name="email" id="inputEmail" class="form-control mb-1" placeholder="Email address" required
+        <input type="email" name="email" id="inputEmail" class="form-control mb-1" value="{% if registration_form.email.value %}{{registration_form.email.value}} {% endif %}" placeholder="Email address" required
                autofocus>
         <label for="inputUsername" class="sr-only">Username</label>
-        <input type="text" name="username" id="inputUsername" class="form-control mb-1" placeholder="Username" required
+        <input type="text" name="username" id="inputUsername" class="form-control mb-1" value="{% if registration_form.username.value %}{{registration_form.username.value}} {% endif %}" placeholder="Username" required 
                >
         <label for="inputPassword1" class="sr-only">Password</label>
         <input type="password" name="password1" id="inputPassword1" class="form-control mb-1" placeholder="Password"
