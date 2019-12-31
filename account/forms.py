@@ -6,7 +6,7 @@ from .models import Profile
 
 
 class RegistrationForm(UserCreationForm):
-    email = forms.EmailField(max_length=60, help_text='Required. Add a valid email address')
+    email = forms.EmailField(max_length=254, help_text='Required. Add a valid email address')
 
     class Meta:
         model = Account
@@ -29,7 +29,7 @@ class AccountAuthenticationForm(forms.ModelForm):
 
 
 class AccountUpdateForm(forms.ModelForm):
-    email = forms.EmailField(max_length=60, help_text='Required. Add a valid email address')
+    email = forms.EmailField(max_length=254, help_text='Required. Add a valid email address')
 
     class Meta:
         model = Account

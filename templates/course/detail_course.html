@@ -83,7 +83,7 @@
                 <h2 class="account-heading"> Author: {{ course_detail.author }}</h2>
             </div>
             <h3 class="account-heading"> Course name: {{ course_detail.name }}</h3>
-            <p class="article-content"> Description: {{ course_detail.description }}</p>
+            <p class="article-content text-break"> Description: {{ course_detail.description }}</p>
             {% if subscription_state == True %}
                 <p class="article-content text-info"> You are subscribed to this course.</p>
                 {% if words_length > 0 %}
